@@ -28,7 +28,7 @@ services:
   # Frontend Deployment (React Static Site)
   - type: static
     name: zoom-scheduler-frontend
-    env: static
+    env: node
     rootDir: frontend
     buildCommand: npm install && npm run build
     publishPath: dist
