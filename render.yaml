@@ -5,8 +5,8 @@ services:
   # Backend Deployment (FastAPI)
   - type: web
     name: zoom-scheduler-backend
-    runtime: python
-    root: backend
+    env: python
+    rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
@@ -24,15 +24,14 @@ services:
         sync: false
       - key: GROQ_API_KEY
         sync: false
-      - key: GEMINI_API_KEY
-        sync: false
 
   # Frontend Deployment (Static Site)
-  - type: static
+  - type: web
     name: zoom-scheduler-frontend
-    root: frontend
+    env: static
+    rootDir: frontend
     buildCommand: npm install && npm run build
-    publishPath: dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_API_BASE
         fromService:
