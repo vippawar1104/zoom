@@ -3,9 +3,8 @@ services:
   - type: web
     name: zoom-scheduler-backend
     runtime: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
-    rootLink: backend
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
@@ -20,12 +19,16 @@ services:
         sync: false
       - key: ZOOM_USER_ID
         sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
 
   # Frontend Deployment (React Static Site)
   - type: web
     name: zoom-scheduler-frontend
     runtime: static
-    buildCommand: npm install && npm run build
+    buildCommand: cd frontend && npm install && npm run build
     publishPath: frontend/dist
     envVars:
       - key: VITE_API_BASE
