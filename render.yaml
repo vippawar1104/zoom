@@ -25,8 +25,9 @@ services:
         sync: false
 
   # Frontend Deployment (Static Site)
-  - type: static_site
+  - type: web
     name: zoom-scheduler-frontend
+    runtime: static
     buildCommand: cd frontend && npm install && npm run build
     publishPath: ./frontend/dist
     envVars:
