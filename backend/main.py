@@ -7,6 +7,7 @@ from core.database import engine, Base
 # Import Routers
 from modules.classes.router import router as classes_router
 from modules.courses.router import router as courses_router
+from modules.ai.router import router as ai_router
 from integrations.zoom.router import router as zoom_router
 from integrations.google_calendar.router import router as calendar_router
 
@@ -42,6 +43,7 @@ app.add_middleware(
 # Include API Routers
 app.include_router(classes_router)
 app.include_router(courses_router)
+app.include_router(ai_router)
 app.include_router(zoom_router)
 app.include_router(calendar_router)
 

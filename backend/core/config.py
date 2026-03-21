@@ -1,3 +1,4 @@
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List
 
@@ -18,6 +19,10 @@ class Settings(BaseSettings):
     google_calendar_id: str = "primary"
     google_sheet_id: str = ""
     google_credentials_file: str = "credentials.json"
+
+    # AI Configuration
+    gemini_api_key: str = Field("", alias="GEMINI_API_KEY")
+    groq_api_key: str = Field("", alias="GROQ_API_KEY")
 
     # Application Defaults
     timezone_default: str = "Asia/Kolkata"

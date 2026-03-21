@@ -58,3 +58,10 @@ export async function createCourse(payload) {
     body: JSON.stringify(payload),
   })
 }
+
+export async function chatWithAI(payload) {
+  return request('/api/ai/chat', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  })
+}

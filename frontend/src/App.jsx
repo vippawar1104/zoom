@@ -5,6 +5,7 @@ import { Dashboard } from './components/Dashboard/Dashboard'
 import { Calendar } from './components/Calendar/Calendar'
 import { CourseList } from './components/Courses/CourseList'
 import { ClassModal } from './components/Modals/ClassModal'
+import { AIAssistant } from './components/AI/AIAssistant'
 import { AlertCircle, X } from 'lucide-react'
 import { useClasses } from './hooks/useClasses'
 import { useCourses } from './hooks/useCourses'
@@ -107,6 +108,48 @@ export default function App() {
       timezone: item.timezone,
     })
     setIsModalOpen(true)
+  }
+
+  async function handleAISuggestion(action, autoSave = false) {
+    setEditing(null)
+    setLocalError('')
+    
+    // Find course_id if course_name is provided
+    let cid = ''
+    if (action.course_name) {
+      const match = courses.find(c => c.name.toLowerCase() === action.course_name.toLowerCase())
+      if (match) cid = match.id
+    }
+
+    const newForm = {
+      ...emptyForm(action.date || formatDate(new Date())),
+      course_id: cid,
+      course_name: cid ? '' : (action.course_name || ''),
+      topic_name: action.topic_name || '',
+      start_time: action.start_time || '09:00',
+      duration_minutes: action.duration_minutes || 90,
+      mentor_email: action.mentor_email || '',
+    }
+
+    setForm(newForm)
+    
+    if (autoSave) {
+      try {
+        // Need to replicate handleSave logic but with the newForm directly
+        let payload = { ...newForm }
+        if (!payload.course_id && payload.course_name) {
+          const created = await addCourse({ name: payload.course_name })
+          payload.course_id = created.id
+          delete payload.course_name
+        }
+        await addClass(payload)
+      } catch (err) {
+        setLocalError('AI Auto-schedule failed: ' + err.message)
+        setIsModalOpen(true) // Open to show error and let user fix
+      }
+    } else {
+      setIsModalOpen(true)
+    }
   }
 
   async function handleSave(e) {
@@ -244,6 +287,8 @@ export default function App() {
         courses={courses}
         loading={classesLoading || coursesLoading}
       />
+
+      <AIAssistant onSuggestAction={handleAISuggestion} />
     </div>
   )
 }
