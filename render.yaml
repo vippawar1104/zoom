@@ -1,3 +1,6 @@
+# Zoom Class Scheduler Blueprint
+name: zoom-class-scheduler-crm
+
 services:
   # Backend Deployment (FastAPI)
   - type: web
@@ -10,6 +13,7 @@ services:
         value: 3.11.0
       - key: TIMEZONE_DEFAULT
         value: Asia/Kolkata
+      # These will be filled in the Render Dashboard
       - key: ZOOM_ACCOUNT_ID
         sync: false
       - key: ZOOM_CLIENT_ID
