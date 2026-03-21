@@ -25,13 +25,13 @@ services:
       - key: GROQ_API_KEY
         sync: false
 
-  # Frontend Deployment (Static Site)
-  - type: web
+  # Frontend Deployment (React Static Site)
+  - type: static
     name: zoom-scheduler-frontend
     env: static
     rootDir: frontend
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    publishPath: dist
     envVars:
       - key: VITE_API_BASE
         fromService:
