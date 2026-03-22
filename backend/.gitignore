@@ -29,3 +29,4 @@ dist/
 build/
 *.egg-info/
 backend/sql_app.db
+uvicorn_output.log
